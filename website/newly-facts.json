@@ -1,0 +1,10 @@
+{
+  "appName": "MálagaMove",
+  "iconPath": "./assets/images/icon.png",
+  "integrations": [
+    "RevenueCat"
+  ],
+  "collectedData": [
+    "Subscription state (via RevenueCat)"
+  ]
+}
