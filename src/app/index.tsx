@@ -18,6 +18,7 @@ import { PlacePickerSheet } from '@/features/route/components/place-picker-sheet
 import { RouteCard } from '@/features/route/components/route-card';
 import { WhenSheet } from '@/features/route/components/when-sheet';
 import { isAirport } from '@/features/route/utils/places';
+import { ProCard } from '@/features/subscription/components/pro-card';
 import { enterStaggered } from '@/lib/motion';
 
 export default function HomeScreen() {
@@ -156,6 +157,8 @@ export default function HomeScreen() {
         ) : (
           <DisclaimerCard />
         )}
+
+        <ProCard />
       </ScrollView>
 
       {s.sheet === 'origin' ? (

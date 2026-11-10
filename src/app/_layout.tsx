@@ -19,6 +19,7 @@ import { Newly } from '@newly/sdk-react-native';
 
 import AppTabs from '@/components/app-tabs';
 import { ThemeSwitchHost } from '@/components/theme-switch-host';
+import { SubscriptionProvider } from '@/features/subscription/components/subscription-provider';
 import { hideExpoDeveloperUi } from '@/lib/dev-menu';
 import generatedAnalytics from '@/lib/newly-analytics.json';
 
@@ -90,7 +91,9 @@ export default function RootLayout() {
           <ThemeProvider value={DefaultTheme}>
             <ThemeSwitchHost>
               <StatusBar style="dark" />
-              <AppTabs />
+              <SubscriptionProvider>
+                <AppTabs />
+              </SubscriptionProvider>
             </ThemeSwitchHost>
           </ThemeProvider>
         </HeroUINativeProvider>

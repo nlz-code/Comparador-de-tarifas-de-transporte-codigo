@@ -8,6 +8,7 @@ import type { Favorite, Suggestion } from '@/features/favorites/types/favorites'
 import { SUGGESTIONS } from '@/features/favorites/utils/suggestions';
 import { faresFor } from '@/features/fares/utils/trip-input';
 import { useTripStore } from '@/features/route/store/trip-store';
+import { useFavoritesGate } from '@/features/subscription/hooks/use-favorites-gate';
 
 export function useFavoritesScreen() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export function useFavoritesScreen() {
   const origin = useTripStore((s) => s.origin);
   const trip = { passengers, luggage, origin };
   const [adding, setAdding] = useState(false);
+  const gate = useFavoritesGate();
 
   const cheapestNow = (f: Favorite) =>
     faresFor({ ...f, when: 'now', passengers: trip.passengers, luggage: trip.luggage })[0]?.total ?? 0;
@@ -29,10 +31,11 @@ export function useFavoritesScreen() {
     router.navigate('/');
   };
 
-  const addSuggestion = (s: Suggestion) => {
-    add({ category: s.category, name: s.title, origin: s.origin, destination: s.destination, km: s.km, minutes: s.minutes });
-    Presets.System.notificationSuccess();
-  };
+  const addSuggestion = (s: Suggestion) =>
+    void gate.guard(() => {
+      add({ category: s.category, name: s.title, origin: s.origin, destination: s.destination, km: s.km, minutes: s.minutes });
+      Presets.System.notificationSuccess();
+    });
 
   return {
     favorites,
@@ -52,7 +55,10 @@ export function useFavoritesScreen() {
     },
     addSuggestion,
     adding,
-    setAdding,
+    setAdding: (open: boolean) => {
+      if (!open) return setAdding(false);
+      void gate.guard(() => setAdding(true));
+    },
     defaultOrigin: trip.origin,
     openHome: () => router.navigate('/'),
   };

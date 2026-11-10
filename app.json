@@ -46,6 +46,12 @@
       "expo-status-bar",
       "expo-web-browser"
     ],
+    "extra": {
+      "revenueCatTestApiKey": "test_joTgApykIPZnoIXyGfdOPlfXJxW",
+      "revenueCatApiKeyIos": "",
+      "revenueCatApiKeyAndroid": "",
+      "revenueCatEntitlementId": "málagamove_pro"
+    },
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true

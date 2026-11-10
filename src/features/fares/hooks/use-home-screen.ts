@@ -11,6 +11,7 @@ import { formatPassengers, formatWhen } from '@/features/fares/utils/format';
 import { faresFor, resolveWhen } from '@/features/fares/utils/trip-input';
 import { useTripStore } from '@/features/route/store/trip-store';
 import { isAirport, shortName } from '@/features/route/utils/places';
+import { useFavoritesGate } from '@/features/subscription/hooks/use-favorites-gate';
 
 export type HomeSheet = 'origin' | 'destination' | 'when' | 'passengers' | 'taxi' | null;
 
@@ -19,6 +20,7 @@ export function useHomeScreen() {
   const trip = useTripStore();
   const favorites = useFavoritesStore((s) => s.favorites);
   const addFavorite = useFavoritesStore((s) => s.add);
+  const gate = useFavoritesGate();
   const [sheet, setSheet] = useState<HomeSheet>(null);
   const [taxiEstimate, setTaxiEstimate] = useState<FareEstimate | null>(null);
 
@@ -67,16 +69,19 @@ export function useHomeScreen() {
   const saved = trip.origin && trip.destination ? isSaved(favorites, trip.origin.id, trip.destination.id) : false;
 
   const saveRoute = () => {
-    if (!trip.origin || !trip.destination || !route) return;
-    addFavorite({
-      category: isAirport(trip.destination) ? 'aeropuerto' : 'otro',
-      name: `${shortName(trip.origin)} → ${shortName(trip.destination)}`,
-      origin: trip.origin,
-      destination: trip.destination,
-      km: route.km,
-      minutes: route.minutes,
+    const { origin, destination } = trip;
+    if (!origin || !destination || !route) return;
+    void gate.guard(() => {
+      addFavorite({
+        category: isAirport(destination) ? 'aeropuerto' : 'otro',
+        name: `${shortName(origin)} → ${shortName(destination)}`,
+        origin,
+        destination,
+        km: route.km,
+        minutes: route.minutes,
+      });
+      Presets.System.notificationSuccess();
     });
-    Presets.System.notificationSuccess();
   };
 
   return {
