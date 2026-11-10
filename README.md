@@ -7,7 +7,7 @@
 
 <p align="center">
   <img alt="iOS" src="https://img.shields.io/badge/iOS-próximamente-071d35?logo=apple&logoColor=white" />
-  <img alt="Android" src="https://img.shields.io/badge/Android-próximamente-2d8af1?logo=android&logoColor=white" />
+  <img alt="Android" src="https://img.shields.io/badge/Android-archivo-APK-2d8af1?logo=android&logoColor=white" />
   <img alt="Idioma" src="https://img.shields.io/badge/idioma-español-f5b041" />
 </p>
 
