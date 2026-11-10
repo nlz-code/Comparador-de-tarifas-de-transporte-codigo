@@ -83,4 +83,4 @@ bun run lint:slop   # reglas de diseño
 
 ---
 
-<p align="center">Hecho en Málaga 🌴 · Made with <a href="https://newly.app">Newly</a></p>
+<p align="center">Hecho en Málaga 🌴 · Made by Noelia López Zayas</a></p>
