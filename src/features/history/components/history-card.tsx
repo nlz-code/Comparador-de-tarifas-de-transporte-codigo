@@ -29,7 +29,7 @@ function Stop({ name, locality, pin }: { name: string; locality: string; pin?: b
         )}
       </View>
       <View className="flex-1">
-        <Text className="font-j6 text-row text-foreground" numberOfLines={1}>
+        <Text className="font-j6 text-row text-foreground" numberOfLines={2}>
           {name}
         </Text>
         <Text className="font-j4 text-mini text-muted" numberOfLines={1}>
@@ -53,13 +53,13 @@ export function HistoryCard({ entry, cheapest, onOpen, onLongPress }: HistoryCar
               <View className="w-5 items-center">
                 <Icon name="time-outline" size={15} tone="muted" />
               </View>
-              <Text className="flex-1 font-j4 text-mini text-muted" numberOfLines={1}>
+              <Text className="flex-1 font-j4 text-mini text-muted" numberOfLines={2}>
                 {time} · {formatPassengers(entry.passengers)}
               </Text>
             </View>
           </View>
           <View className="w-px bg-border" />
-          <View className="w-32 justify-between gap-3">
+          <View className="w-28 justify-between gap-3">
             {cheapest ? (
               <View className="flex-row items-center gap-2">
                 <ProviderLogo provider={cheapest.provider} size="sm" />

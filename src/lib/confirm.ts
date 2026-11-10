@@ -19,10 +19,10 @@ type ConfirmDeleteOptions = {
  *
  *   onPress={() => confirmDelete({ title: 'Delete workout?', onConfirm: () => removeWorkout(id) })}
  */
-export function confirmDelete({ title = 'Delete?', message, confirmLabel = 'Delete', onConfirm }: ConfirmDeleteOptions): void {
+export function confirmDelete({ title = '¿Eliminar?', message, confirmLabel = 'Eliminar', onConfirm }: ConfirmDeleteOptions): void {
   Presets.System.notificationWarning();
   Alert.alert(title, message, [
-    { text: 'Cancel', style: 'cancel' },
+    { text: 'Cancelar', style: 'cancel' },
     { text: confirmLabel, style: 'destructive', onPress: onConfirm },
   ]);
 }

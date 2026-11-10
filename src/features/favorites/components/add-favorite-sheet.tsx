@@ -105,7 +105,7 @@ export function AddFavoriteSheet({ visible, initialOrigin, onClose, onSave }: Ad
             value={name}
             onChangeText={setName}
             maxLength={60}
-            placeholder={origin && destination ? `${shortName(origin)} → ${shortName(destination)}` : 'Casa → Trabajo'}
+            placeholder={origin && destination ? `${shortName(origin)} → ${shortName(destination)}` : 'Opcional'}
             placeholderTextColorClassName="accent-muted"
             className="rounded-xl bg-field-background px-3 py-3 font-j5 text-sm leading-none text-foreground"
             accessibilityLabel="Nombre de la ruta"
