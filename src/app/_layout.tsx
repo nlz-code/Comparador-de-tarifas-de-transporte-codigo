@@ -1,13 +1,23 @@
 import '@/global.css';
 
+import {
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_500Medium,
+  PlusJakartaSans_600SemiBold,
+  PlusJakartaSans_700Bold,
+  PlusJakartaSans_800ExtraBold,
+  useFonts,
+} from '@expo-google-fonts/plus-jakarta-sans';
 import Constants from 'expo-constants';
-import { DarkTheme, DefaultTheme, Slot, ThemeProvider } from 'expo-router';
+import { DefaultTheme, ThemeProvider } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { HeroUINativeProvider } from 'heroui-native';
-import { useColorScheme } from 'react-native';
+import { Uniwind } from 'uniwind';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { Newly } from '@newly/sdk-react-native';
 
+import AppTabs from '@/components/app-tabs';
 import { ThemeSwitchHost } from '@/components/theme-switch-host';
 import { hideExpoDeveloperUi } from '@/lib/dev-menu';
 import generatedAnalytics from '@/lib/newly-analytics.json';
@@ -54,6 +64,7 @@ const newlyAnalyticsSampling = typeof analytics.sampling === 'number' ? analytic
 // the person looking at their own app. See src/lib/dev-menu.ts for why this is JS and
 // not an app.json plugin option.
 hideExpoDeveloperUi();
+Uniwind.setTheme('light');
 
 if (analytics.enabled !== false && newlyIngestKey && newlyApiUrl) {
   Newly.init({
@@ -63,31 +74,23 @@ if (analytics.enabled !== false && newlyIngestKey && newlyApiUrl) {
   });
 }
 
-// Color scheme is driven by app.json `userInterfaceStyle` (automatic / light / dark) —
-// set by the design system at lock time. Uniwind follows the system color scheme by
-// default (adaptive themes), so the HeroUI/Uniwind design tokens switch light/dark on
-// their own; we only mirror it into React Navigation's theme here.
-//
-// KeyboardProvider (react-native-keyboard-controller) is mounted once at the root so any
-// screen can use KeyboardAwareScrollView / keyboard hooks for proper form handling — this
-// is the keyboard library the design system mandates over RN's KeyboardAvoidingView. It is
-// pre-baked into the scaffold (along with MMKV for persistence and Skia for charts) so the
-// native module set is fixed up front and screen work hot-reloads without a native rebuild.
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const [fontsLoaded] = useFonts({
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+    PlusJakartaSans_600SemiBold,
+    PlusJakartaSans_700Bold,
+    PlusJakartaSans_800ExtraBold,
+  });
+  if (!fontsLoaded) return null;
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <KeyboardProvider>
         <HeroUINativeProvider>
-          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            {/* ThemeSwitchHost is always mounted (zero cost when unused) so any theme
-                toggle switches via useThemeSwitch() and the circular reveal plays. */}
+          <ThemeProvider value={DefaultTheme}>
             <ThemeSwitchHost>
-              {/* The scaffold boots straight into src/app/index.tsx (the Newly welcome
-                  screen), no tab bar. src/components/app-tabs.tsx is the NativeTabs
-                  reference: when the app has tab routes, render <AppTabs /> here
-                  instead of <Slot /> (explore.tsx is its second tab). */}
-              <Slot />
+              <StatusBar style="dark" />
+              <AppTabs />
             </ThemeSwitchHost>
           </ThemeProvider>
         </HeroUINativeProvider>
