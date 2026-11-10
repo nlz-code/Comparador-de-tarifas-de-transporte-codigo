@@ -1,0 +1,1 @@
+- [Tarifas oficiales del taxi](official-taxi-tariffs.md): taxi uses official 2025 Málaga tariffs; VTC are user estimates
