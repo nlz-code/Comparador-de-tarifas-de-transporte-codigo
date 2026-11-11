@@ -9,7 +9,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/plus-jakarta-sans';
 import Constants from 'expo-constants';
-import { DefaultTheme, ThemeProvider } from 'expo-router';
+import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { HeroUINativeProvider } from 'heroui-native';
 import { Uniwind } from 'uniwind';
@@ -17,7 +17,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { Newly } from '@newly/sdk-react-native';
 
-import AppTabs from '@/components/app-tabs';
 import { ThemeSwitchHost } from '@/components/theme-switch-host';
 import { SubscriptionProvider } from '@/features/subscription/components/subscription-provider';
 import { hideExpoDeveloperUi } from '@/lib/dev-menu';
@@ -92,7 +91,7 @@ export default function RootLayout() {
             <ThemeSwitchHost>
               <StatusBar style="dark" />
               <SubscriptionProvider>
-                <AppTabs />
+                <Stack screenOptions={{ headerShown: false }} />
               </SubscriptionProvider>
             </ThemeSwitchHost>
           </ThemeProvider>
