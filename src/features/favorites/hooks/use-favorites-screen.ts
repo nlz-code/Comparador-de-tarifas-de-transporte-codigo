@@ -14,6 +14,7 @@ export function useFavoritesScreen() {
   const router = useRouter();
   const favorites = useFavoritesStore((s) => s.favorites);
   const add = useFavoritesStore((s) => s.add);
+  const update = useFavoritesStore((s) => s.update);
   const remove = useFavoritesStore((s) => s.remove);
   const loadTrip = useTripStore((s) => s.loadTrip);
   const passengers = useTripStore((s) => s.passengers);
@@ -21,6 +22,7 @@ export function useFavoritesScreen() {
   const origin = useTripStore((s) => s.origin);
   const trip = { passengers, luggage, origin };
   const [adding, setAdding] = useState(false);
+  const [editing, setEditing] = useState<Favorite | null>(null);
   const gate = useFavoritesGate();
 
   const cheapestNow = (f: Favorite) =>
@@ -54,6 +56,16 @@ export function useFavoritesScreen() {
       Presets.System.notificationSuccess();
     },
     addSuggestion,
+    editing,
+    startEdit: (f: Favorite) => setEditing(f),
+    stopEdit: () => setEditing(null),
+    saveEdit: (f: Omit<Favorite, 'id' | 'createdAt'>) => {
+      if (!editing) return;
+      update(editing.id, f);
+      Presets.System.notificationSuccess();
+    },
+    freeLeft: gate.remaining,
+    freeLimit: gate.limit,
     adding,
     setAdding: (open: boolean) => {
       if (!open) return setAdding(false);

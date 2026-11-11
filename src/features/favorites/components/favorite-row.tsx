@@ -13,16 +13,18 @@ interface FavoriteRowProps {
   /** Cheapest estimate right now, for this route. */
   price: number;
   onOpen: () => void;
+  onEdit: () => void;
   /** Asks the user to confirm, then deletes. */
   onAskDelete: () => void;
 }
 
-export function FavoriteRow({ favorite, price, onOpen, onAskDelete }: FavoriteRowProps) {
+export function FavoriteRow({ favorite, price, onOpen, onEdit, onAskDelete }: FavoriteRowProps) {
   const cat = CATEGORIES[favorite.category];
 
   const openMenu = () =>
     Alert.alert(favorite.name, undefined, [
       { text: 'Ver precios', onPress: onOpen },
+      { text: 'Editar', onPress: onEdit },
       { text: 'Eliminar', style: 'destructive', onPress: onAskDelete },
       { text: 'Cancelar', style: 'cancel' },
     ]);

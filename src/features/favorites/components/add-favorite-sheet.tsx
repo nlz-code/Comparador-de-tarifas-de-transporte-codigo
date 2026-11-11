@@ -18,15 +18,17 @@ import { shortName } from '@/features/route/utils/places';
 interface AddFavoriteSheetProps {
   visible: boolean;
   initialOrigin: Place | null;
+  /** When set, the sheet edits this favourite instead of creating one. */
+  favorite?: Favorite;
   onClose: () => void;
   onSave: (f: Omit<Favorite, 'id' | 'createdAt'>) => void;
 }
 
-export function AddFavoriteSheet({ visible, initialOrigin, onClose, onSave }: AddFavoriteSheetProps) {
-  const [category, setCategory] = useState<FavoriteCategory>('casa');
-  const [name, setName] = useState('');
-  const [origin, setOrigin] = useState<Place | null>(initialOrigin);
-  const [destination, setDestination] = useState<Place | null>(null);
+export function AddFavoriteSheet({ visible, initialOrigin, favorite, onClose, onSave }: AddFavoriteSheetProps) {
+  const [category, setCategory] = useState<FavoriteCategory>(favorite?.category ?? 'casa');
+  const [name, setName] = useState(favorite?.name ?? '');
+  const [origin, setOrigin] = useState<Place | null>(favorite?.origin ?? initialOrigin);
+  const [destination, setDestination] = useState<Place | null>(favorite?.destination ?? null);
   const [picking, setPicking] = useState<'origin' | 'destination' | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +45,8 @@ export function AddFavoriteSheet({ visible, initialOrigin, onClose, onSave }: Ad
     setError(null);
     setSaving(true);
     try {
-      const route = await fetchRoute(origin, destination);
+      const sameRoute = favorite && favorite.origin.id === origin.id && favorite.destination.id === destination.id;
+      const route = sameRoute ? { km: favorite.km, minutes: favorite.minutes } : await fetchRoute(origin, destination);
       onSave({
         category,
         name: name.trim() || `${shortName(origin)} → ${shortName(destination)}`,
@@ -61,7 +64,7 @@ export function AddFavoriteSheet({ visible, initialOrigin, onClose, onSave }: Ad
   };
 
   return (
-    <Sheet visible={visible} title="Nueva ruta favorita" onClose={onClose}>
+    <Sheet visible={visible} title={favorite ? 'Editar favorito' : 'Nueva ruta favorita'} onClose={onClose}>
       <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="px-5 pb-safe-offset-4 gap-5" bottomOffset={24}>
         <View className="gap-2">
           <Text className="font-j7 text-base text-foreground">Tipo</Text>
@@ -119,7 +122,7 @@ export function AddFavoriteSheet({ visible, initialOrigin, onClose, onSave }: Ad
             <Text className="font-j5 text-row text-muted">Calculando la ruta…</Text>
           </View>
         ) : (
-          <PillButton label="Guardar ruta" icon="checkmark" onPress={() => void save()} />
+          <PillButton label={favorite ? 'Guardar cambios' : 'Guardar ruta'} icon="checkmark" onPress={() => void save()} />
         )}
       </KeyboardAwareScrollView>
 

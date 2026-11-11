@@ -58,7 +58,7 @@ export default function FavoritesScreen() {
           {revealed
             ? s.favorites.map((f, i) => (
                 <Animated.View key={f.id} entering={enterStaggered(i)} layout={reflow}>
-                  <FavoriteRow favorite={f} price={s.cheapestNow(f)} onOpen={() => s.open(f)} onAskDelete={() => s.askDelete(f)} />
+                  <FavoriteRow favorite={f} price={s.cheapestNow(f)} onOpen={() => s.open(f)} onEdit={() => s.startEdit(f)} onAskDelete={() => s.askDelete(f)} />
                 </Animated.View>
               ))
             : null}
@@ -70,7 +70,13 @@ export default function FavoritesScreen() {
               </View>
               <View className="flex-1 gap-0.5">
                 <Text className="font-j7 text-sm text-foreground">Añadir nueva ruta</Text>
-                <Text className="font-j4 text-row text-muted">Guarda tus trayectos más frecuentes</Text>
+                <Text className="font-j4 text-row text-muted">
+                  {s.freeLeft === null
+                    ? 'Rutas ilimitadas con MálagaMove Pro'
+                    : s.freeLeft > 0
+                      ? `Te quedan ${s.freeLeft} de ${s.freeLimit} rutas gratis`
+                      : `Límite de ${s.freeLimit} rutas gratis · Pro para más`}
+                </Text>
               </View>
               <RowChevron />
             </View>
@@ -97,6 +103,10 @@ export default function FavoritesScreen() {
 
       {s.adding ? (
         <AddFavoriteSheet visible initialOrigin={s.defaultOrigin} onClose={() => s.setAdding(false)} onSave={s.add} />
+      ) : null}
+
+      {s.editing ? (
+        <AddFavoriteSheet visible favorite={s.editing} initialOrigin={s.editing.origin} onClose={s.stopEdit} onSave={s.saveEdit} />
       ) : null}
     </>
   );

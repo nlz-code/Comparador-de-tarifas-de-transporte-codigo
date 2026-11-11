@@ -20,5 +20,7 @@ export function useFavoritesGate() {
     if (await sub.showPaywall()) action();
   };
 
-  return { locked, guard, limit: FREE_FAVORITES_LIMIT };
+  const remaining = sub.isPro ? null : Math.max(0, FREE_FAVORITES_LIMIT - count);
+
+  return { locked, guard, limit: FREE_FAVORITES_LIMIT, remaining };
 }
