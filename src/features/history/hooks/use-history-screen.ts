@@ -68,9 +68,9 @@ export function useHistoryScreen() {
 
   const askClear = () =>
     confirmDelete({
-      title: '¿Borrar todo el historial?',
+      title: '¿Vaciar el historial?',
       message: 'Se eliminarán todas tus búsquedas recientes de este teléfono.',
-      confirmLabel: 'Borrar todo',
+      confirmLabel: 'Vaciar historial',
       onConfirm: clear,
     });
 
